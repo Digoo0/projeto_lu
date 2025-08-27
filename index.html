@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Pra você, meu amor ♥</title>
+  <meta name="description" content="Uma pequena surpresa feita com amor." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Parisienne&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+  <style>
+    :root{
+      --bg1:#ffd6e7; /* rosa clarinho */
+      --bg2:#fff6d9; /* amarelinho */
+      --fg:#4b2b36;  /* marrom vinho */
+      --accent:#ff6b9e; /* rosa forte */
+      --card:#ffffffcc;
+      --shadow: 0 10px 30px rgba(0,0,0,.08);
+      --radius: 24px;
+    }
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0;
+      font-family: 'Poppins', system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, 'Helvetica Neue', Arial, sans-serif;
+      color:var(--fg);
+      background: linear-gradient(135deg,var(--bg1),var(--bg2));
+      overflow-x:hidden;
+    }
+    .container{max-width:1100px;margin:0 auto;padding:24px}
+
+    /* Corações flutuando no fundo */
+    .hearts{
+      position:fixed; inset:0; pointer-events:none; overflow:hidden;
+    }
+    .heart{
+      position:absolute; width:18px; height:18px; transform:rotate(45deg);
+      background: var(--accent);
+      animation: float 10s linear infinite;
+      opacity:.45; filter: blur(.2px);
+    }
+    .heart::before,.heart::after{
+      content:""; position:absolute; width:18px; height:18px; background:var(--accent); border-radius:50%;
+    }
+    .heart::before{ left:-9px; }
+    .heart::after { top:-9px; }
+    @keyframes float{
+      0%{ transform:translateY(110vh) rotate(45deg) scale(.8); }
+      100%{ transform:translateY(-10vh) rotate(45deg) scale(1.2); }
+    }
+
+    header{
+      display:grid; place-items:center; text-align:center; padding:80px 16px 32px;
+    }
+    .title{
+      font-family: 'Parisienne', cursive; font-size: clamp(42px, 10vw, 86px);
+      margin:0; line-height:1; letter-spacing:.5px; color:#b02a5b; text-shadow:0 8px 30px rgba(176,42,91,.25);
+    }
+    .subtitle{
+      margin:18px 0 0; font-weight:300; font-size: clamp(16px, 2.5vw, 22px);
+    }
+
+    .card{
+      background:var(--card); backdrop-filter: blur(6px);
+      border-radius:var(--radius); box-shadow:var(--shadow); padding:22px; margin: 22px auto;
+    }
+
+    .message{ font-size: clamp(15px,2.2vw,18px); line-height:1.7; text-align:center; }
+
+    /* Galeria */
+    .gallery{ display:grid; grid-template-columns: repeat(12, 1fr); gap:14px; margin-top:10px; }
+    .g-item{ position:relative; overflow:hidden; border-radius:18px; box-shadow:var(--shadow); cursor:zoom-in; }
+    .g-item img{ width:100%; height:100%; object-fit:cover; display:block; transition: transform .5s ease; }
+    .g-item:hover img{ transform: scale(1.06); }
+
+    /* layout responsivo de mosaico */
+    .g-1{ grid-column: span 6; aspect-ratio: 4/3; }
+    .g-2{ grid-column: span 6; aspect-ratio: 4/3; }
+    .g-3{ grid-column: span 4; aspect-ratio: 3/4; }
+    .g-4{ grid-column: span 4; aspect-ratio: 1/1; }
+    .g-5{ grid-column: span 4; aspect-ratio: 3/4; }
+    .g-6{ grid-column: span 12; aspect-ratio: 21/9; }
+
+    @media (max-width: 900px){
+      .g-1,.g-2{ grid-column: span 12; }
+      .g-3,.g-4,.g-5{ grid-column: span 6; }
+    }
+    @media (max-width: 560px){
+      .gallery{ gap:10px; }
+      .g-3,.g-4,.g-5{ grid-column: span 12; }
+      .g-6{ aspect-ratio: 16/9; }
+    }
+
+    /* Lightbox simples */
+    dialog#lightbox{ border:none; padding:0; background: transparent; }
+    .lightbox-backdrop{ position:fixed; inset:0; background: rgba(0,0,0,.75); display:grid; place-items:center; }
+    .lightbox-img{ max-width: 92vw; max-height: 86vh; border-radius: 18px; box-shadow: 0 20px 60px rgba(0,0,0,.5); }
+    .close-btn{
+      position: fixed; top:18px; right:18px; border:none; font-size: 28px; line-height:1; width:44px; height:44px;
+      border-radius: 50%; background:#ffffffdd; cursor:pointer; box-shadow: var(--shadow);
+    }
+
+    footer{ text-align:center; padding:36px 8px 70px; font-size:14px; opacity:.8 }
+    .mini-heart{ color:var(--accent); }
+
+    /* botão CTA opcional */
+    .cta{
+      display:inline-flex; align-items:center; gap:10px; padding:12px 18px; border-radius: 999px; border:1px solid #ffb3cc;
+      background:#fff; text-decoration:none; color:#b02a5b; font-weight:600; box-shadow:var(--shadow);
+      transition: transform .15s ease;
+    }
+    .cta:hover{ transform: translateY(-2px); }
+  </style>
+</head>
+<body>
+  <!-- Corações animados (gerados via JS lá no final) -->
+  <div class="hearts" aria-hidden="true" id="hearts"></div>
+
+  <header class="container">
+    <h1 class="title">Pra você, minha pretinha</h1>
+    <p class="subtitle">Um pedacinho do quanto você é especial pra mim. ♥</p>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <p class="message">
+        Desde que você chegou, tudo ficou mais leve. Obrigado por ser meu porto seguro,
+        minha motivação e meu sorriso bobo do dia. Esse site é simples, mas é cheio
+        de <strong>carinho</strong>. Cada foto aqui guarda um momento que eu amo reviver com você.
+      </p>
+    </section>
+
+    <!-- Galeria de fotos: troque os caminhos das imagens para as suas! -->
+    <section class="gallery" id="gallery">
+      <!-- DICA: coloque suas fotos em uma pasta "imgs" ao lado deste arquivo e troque os src abaixo
+           pelos nomes reais (ex: imgs/viagem1.jpg). Use 6 a 10 fotos pra ficar levinho. -->
+      <figure class="g-item g-1"><img src="imgs/1.jpg" alt="nossa foto 1" loading="lazy"></figure>
+      <figure class="g-item g-2"><img src="imgs/2.jpg" alt="nossa foto 2" loading="lazy"></figure>
+      <figure class="g-item g-3"><img src="imgs/3.jpg" alt="nossa foto 3" loading="lazy"></figure>
+      <figure class="g-item g-4"><img src="imgs/4.jpg" alt="nossa foto 4" loading="lazy"></figure>
+      <figure class="g-item g-5"><img src="imgs/5.jpg" alt="nossa foto 5" loading="lazy"></figure>
+      <figure class="g-item g-6"><img src="imgs/6.jpg" alt="nossa foto 6" loading="lazy"></figure>
+    </section>
+
+    <section class="card" style="text-align:center">
+      <a class="cta" href="#" onclick="scrollTo(0,0); return false;" aria-label="Voltar ao topo">
+        ↑ Voltar ao topo
+      </a>
+    </section>
+  </main>
+
+  <footer>
+    Feito com <span class="mini-heart">❤</span> por mim, só pra você.
+  </footer>
+
+  <!-- Lightbox e corações -->
+  <dialog id="lightbox">
+    <div class="lightbox-backdrop" onclick="closeLightbox(event)">
+      <button class="close-btn" aria-label="Fechar" onclick="closeLightbox(event)">×</button>
+      <img class="lightbox-img" id="lightboxImg" alt="foto ampliada" />
+    </div>
+  </dialog>
+
+  <script>
+    // Gera corações em posições e tempos aleatórios
+    (function spawnHearts(){
+      const wrap = document.getElementById('hearts');
+      const W = window.innerWidth;
+      const N = Math.max(12, Math.min(28, Math.floor(W/40))); // quantidade proporcional à largura
+      for(let i=0;i<N;i++){
+        const h = document.createElement('div');
+        h.className='heart';
+        h.style.left = Math.random()*100 + 'vw';
+        const dur = 8 + Math.random()*8;
+        h.style.animationDuration = dur+'s';
+        h.style.animationDelay = -Math.random()*dur+'s';
+        h.style.opacity = (0.25 + Math.random()*0.35).toFixed(2);
+        h.style.transform = `translateY(${90+Math.random()*20}vh) rotate(45deg)`;
+        wrap.appendChild(h);
+      }
+      window.addEventListener('resize', ()=>{
+        // simples: recria ao redimensionar
+        wrap.innerHTML=''; spawnHearts();
+      }, {once:true});
+    })();
+
+    // Lightbox simples
+    const dialog = document.getElementById('lightbox');
+    const imgEl = document.getElementById('lightboxImg');
+    document.getElementById('gallery').addEventListener('click', (e)=>{
+      const target = e.target.closest('img');
+      if(!target) return;
+      imgEl.src = target.src; imgEl.alt = target.alt || 'foto';
+      dialog.showModal();
+    });
+    function closeLightbox(ev){ ev.preventDefault(); dialog.close(); }
+  </script>
+</body>
+</html>
+
